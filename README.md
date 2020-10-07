@@ -12,7 +12,11 @@ git clone https://github.com/aditbaco/centos7-a2ensite-id_ID.git
 ```sh
 mkdir /etc/httpd/sites-available && mkdir /etc/httpd/sites-enabled
 ```
-4. Buka configurasi default apache : nano /etc/httpd/conf/httpd.conf lalu tambahkan baris kode berikut ini di bagian paling akhir: 
+4. Buka configurasi default apache dengan perintah : 
+```sh
+nano /etc/httpd/conf/httpd.conf
+```
+Lalu tambahkan baris kode berikut ini di bagian paling akhir: 
 ```sh
 Include sites-enabled/*.conf
 ```
