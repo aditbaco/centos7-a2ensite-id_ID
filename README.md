@@ -1,7 +1,14 @@
 # cara install 
 1. Login sebagai root atau sudo
-2. cd /usr/local/bin dan clone git ini : git clone https://github.com/aditbaco/centos7-a2ensite-id_ID.git
-3. buat direktori sbb :
+2. Beralih ke direktori usr>local>bin dengan perintah :
+```sh
+cd /usr/local/bin
+```
+lalu clone git ini dengan perintah : 
+```sh
+git clone https://github.com/aditbaco/centos7-a2ensite-id_ID.git
+```
+3. Selanjutnya, buat direktori baru untuk menampung konfigurasi apache webserver kita :
 ```sh
 mkdir /etc/httpd/sites-available && mkdir /etc/httpd/sites-enabled
 ```
