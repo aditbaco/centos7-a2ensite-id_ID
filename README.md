@@ -36,40 +36,61 @@ systemctl restart httpd
 # cara menambah vhost webserver
 1. Tambahkan file konfigurasi apache baru berakhiran <website anda>.conf di direktori /etc/httpd/sites-available. Contoh: 
 ```sh
-nano /etc/httpd/sites-available/websiteku.id.conf
+nano /etc/httpd/sites-available/example.com.conf
 ```
 2. Isikan dengan konfigurasi vhost, bisa pakai standar vhost berikut ini, jangan lupa sesuaikan isiannya. Contoh:
 ```sh
+# Laravel optimized conf example
 <VirtualHost *:80>
-        ServerName websiteku.id
-        ServerAlias www.websiteku.id
-        #AllowOverride All
-        ServerAdmin admin@localhost
-        DocumentRoot /var/www/websiteku.id
-        ErrorLog /etc/httpd/logs/websiteku.id-error.log
-        CustomLog /etc/httpd/logs/websiteku.id-access.log combined
+        ServerName example.com
+        ServerAlias www.example.com
+        Redirect permanent / https://example.com/
+RewriteEngine on
+RewriteCond %{SERVER_NAME} =example.com [OR]
+RewriteCond %{SERVER_NAME} =www.example.com
+RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
+</VirtualHost>
 
-        # This is for Drupal8 clean URLs.
-        <Directory /var/www/websiteku.id>
-		Options Indexes FollowSymLinks MultiViews
+<IfModule mod_ssl.c>
+<VirtualHost *:443>
+        ServerName example.com
+        ServerAlias www.example.com
+        SSLEngine On
+        DocumentRoot /var/www/example.com/public
+
+        <Directory "/var/www/example.com/public">
+                AllowOverride All
+                Options FollowSymLinks Multiviews indexes
                 RewriteEngine On
-                RewriteBase /
+                Require all granted
+                RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
+                RewriteRule .* - [F]
                 RewriteCond %{REQUEST_FILENAME} !-f
                 RewriteCond %{REQUEST_FILENAME} !-d
                 RewriteRule ^(.*)$ index.php?q=$1 [L,QSA]
         </Directory>
-		<IfModule mpm_peruser_module>
-                ServerEnvironment apache apache
-        </IfModule>
+
+        ErrorLog /etc/httpd/logs/example.com-error.log
+        CustomLog /etc/httpd/logs/example.com-access.log combined
+
+Include /etc/letsencrypt/options-ssl-apache.conf
+SSLCertificateFile /etc/letsencrypt/live/example.com/cert.pem
+SSLCertificateKeyFile /etc/letsencrypt/live/example.com/privkey.pem
+SSLCertificateChainFile /etc/letsencrypt/live/example.com/chain.pem
 </VirtualHost>
+</IfModule>
+```
+atau gunakan contoh example.com.conf terlampir dengan perintah :
+```sh
+cp /usr/local/bin/centos7-a2ensite-id_ID/example.com.conf /etc/httpd/sites-available/example.com.conf
 ```
 3. Terakhir, buat symlink dengan perintah :
 ```sh
-a2ensite websiteku.id
+a2ensite example.com
 ```
 untuk mematikan website/virtual host tinggal ketikkan perintah :
 ```sh
-a2dissite websiteku.id
+a2dissite example.com
 ```
 4. Jangan lupa Restart apache : 
 ```sh
