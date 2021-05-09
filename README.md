@@ -8,11 +8,19 @@ lalu clone git ini dengan perintah :
 ```sh
 git clone https://github.com/aditbaco/centos7-a2ensite-id_ID.git
 ```
-3. Selanjutnya, buat direktori baru untuk menampung konfigurasi apache webserver kita :
+3. copas file a2ensite dan a2dissite pada folder centos7-a2ensite-id_ID ke direktori /usr/local/bin Anda
+```sh
+cp centos7-a2ensite-id_ID/centos7-a2ensite ./a2ensssite && cp centos7-a2ensite-id_ID/centos7-a2dissite ./a2dissite
+```
+kemudian berikan hak akses file dengan perintah :
+```sh
+chmod +x /usr/local/bin/a2*
+```
+4. Selanjutnya, buat direktori baru untuk menampung konfigurasi apache webserver kita :
 ```sh
 mkdir /etc/httpd/sites-available && mkdir /etc/httpd/sites-enabled
 ```
-4. Buka configurasi default apache dengan perintah : 
+5. Buka configurasi default apache dengan perintah : 
 ```sh
 nano /etc/httpd/conf/httpd.conf
 ```
@@ -20,7 +28,7 @@ Lalu tambahkan baris kode berikut ini di bagian paling akhir:
 ```sh
 Include sites-enabled/*.conf
 ```
-5. Restart apache : 
+6. Restart apache : 
 ```sh
 systemctl restart httpd
 ```
@@ -59,11 +67,15 @@ nano /etc/httpd/sites-available/websiteku.id.conf
 ```sh
 a2ensite websiteku.id
 ```
-4. Restart apache : 
+untuk mematikan website/virtual host tinggal ketikkan perintah :
+```sh
+a2dissite websiteku.id
+```
+4. Jangan lupa Restart apache : 
 ```sh
 systemctl restart httpd
 ```
-5. Done. Test URL website baru anda. 
+5. Done. Test URL website baru anda.
 
 Supported by :
 Kaisarpropertindo : https://www.kaisarpropertindo.id
